@@ -43,7 +43,7 @@ def buildGraph(CSP, backTrackColor = None):
         "Seat_5": "orange",
         "Seat_6": "orange"
     }
-    nodes=lab7CSP.variables
+    nodes=CSP.variables
     sizes=[10]*len(nodes)
 
     x_coords = []
@@ -70,12 +70,12 @@ def buildGraph(CSP, backTrackColor = None):
 
     for i, node in enumerate(nodes):
         seats_domain = ""
-        for j in lab7CSP.domains[node]:
+        for j in CSP.domains[node]:
             seats_domain += " " + str(j)
         net_lab7.add_node(node, color=nodeColors[node], title=seats_domain, size=sizes[i], x=x_coords[i], y=y_coords[i])
 
-    for nodeFrom in lab7CSP.neighbors.keys():
-        for nodeTo in lab7CSP.neighbors[nodeFrom]:
+    for nodeFrom in CSP.neighbors.keys():
+        for nodeTo in CSP.neighbors[nodeFrom]:
             net_lab7.add_edge(nodeFrom, nodeTo, color="white")
 
     net_lab7.toggle_physics(False)
