@@ -2,6 +2,8 @@ from queue import Queue
 
 from src.utils import first
 
+from pyvis.network import Network
+
 def AC3(csp):
   queue = Queue()
   
@@ -115,6 +117,59 @@ def unordered_domain_values(var, assignment, csp):
 
 #     result = backtrack({})
 #     return result
+
+def buildGraph(csp):
+  net_backtrack = Network(heading = "Lab 7 Task 1",
+                   bgcolor ="#1C1919",
+                   font_color = "white",
+                   height = "750px",
+                   width = "100%",
+                   directed= False)
+  nodeColors = { 
+        "Seat_1": "red",
+        "Seat_2": "orange",
+        "Seat_3": "orange",
+        "Seat_4": "yellow",
+        "Seat_5": "orange",
+        "Seat_6": "orange"
+    }
+  nodes=csp.variables
+  sizes=[10]*len(nodes)
+
+  x_coords = []
+  y_coords = []
+  for node in nodes:
+        if node.lower()=="seat_1":
+            x_coords.append(0)
+            y_coords.append(0)
+        elif node.lower()=="seat_2":
+            x_coords.append(50)
+            y_coords.append(50)
+        elif node.lower()=="seat_3":
+            x_coords.append(50)
+            y_coords.append(125)
+        elif node.lower()=="seat_4":
+            x_coords.append(0)
+            y_coords.append(175)
+        elif node.lower()=="seat_5":
+            x_coords.append(-50)
+            y_coords.append(125)
+        elif node.lower()=="seat_6":
+            x_coords.append(-50)
+            y_coords.append(50)
+
+  for i, node in enumerate(nodes):
+        seats_domain = ""
+        for j in csp.domains[node]:
+            seats_domain += " " + str(j)
+        net_backtrack.add_node(node, color=nodeColors[node], title=seats_domain, size=sizes[i], x=x_coords[i], y=y_coords[i])
+
+  for nodeFrom in csp.neighbors.keys():
+        for nodeTo in csp.neighbors[nodeFrom]:
+            net_backtrack.add_edge(nodeFrom, nodeTo, color="white")
+
+  net_backtrack.toggle_physics(False)
+  net_backtrack.show("Lab 7 Backtracking.html", notebook=False)
 
 def backtracking_search(csp, select_unassigned_variable=first_unassigned_variable, order_domain_values=unordered_domain_values):
     used = []
