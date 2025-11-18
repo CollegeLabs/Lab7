@@ -95,9 +95,29 @@ def unordered_domain_values(var, assignment, csp):
     """The default value order."""
     return csp.choices(var)
 
+#old version of backtracking search (for reference)
+# def backtracking_search(csp, select_unassigned_variable=first_unassigned_variable, order_domain_values=unordered_domain_values):
+    
+#     def backtrack(assignment):
+#         if len(assignment) == len(csp.variables):
+#             return assignment
+
+#         var = select_unassigned_variable(assignment, csp)
+#         for value in order_domain_values(var, assignment, csp):
+#             if csp.nconflicts(var, value, assignment)==0:
+#                 csp.assign(var, value, assignment)
+#                 result = backtrack(assignment)
+#                 if result is not None:
+#                   return result
+                
+#             csp.unassign(var, assignment)
+#         return None
+
+#     result = backtrack({})
+#     return result
 
 def backtracking_search(csp, select_unassigned_variable=first_unassigned_variable, order_domain_values=unordered_domain_values):
-    
+    used = []
     def backtrack(assignment):
         if len(assignment) == len(csp.variables):
             return assignment
@@ -105,15 +125,15 @@ def backtracking_search(csp, select_unassigned_variable=first_unassigned_variabl
         var = select_unassigned_variable(assignment, csp)
         for value in order_domain_values(var, assignment, csp):
             if csp.nconflicts(var, value, assignment)==0:
-                csp.assign(var, value, assignment)
-                result = backtrack(assignment)
-                if result is not None:
-                  return result
+                if value not in used:
+                  csp.assign(var, value, assignment)
+                  used.append(value)
+                  result = backtrack(assignment)
+                  if result is not None:
+                    return result
                 
             csp.unassign(var, assignment)
-        return None
 
+        return None
     result = backtrack({})
     return result
-
-
