@@ -107,7 +107,7 @@ if run_full:
     placeholder.empty()
     result = backtracking_search(CSP)
     with placeholder:
-        buildGraph(CSP, result)
+        buildGraph(result)
 
 elif reset_clicked:
     placeholder.empty()
