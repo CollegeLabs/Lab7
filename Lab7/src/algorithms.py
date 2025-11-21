@@ -178,15 +178,21 @@ def backtracking_search(csp, select_unassigned_variable=first_unassigned_variabl
             return assignment
 
         var = select_unassigned_variable(assignment, csp)
+        print("\n")
+        print("var = ",var)
         for value in order_domain_values(var, assignment, csp):
+            print("value = ",value)
             if csp.nconflicts(var, value, assignment)==0:
+                print("value can sit beside eachother")
                 if value not in used:
+                  print("value ", value, " accepted")
                   csp.assign(var, value, assignment)
                   used.append(value)
                   result = backtrack(assignment)
                   if result is not None:
                     return result
-                
+                else: print("value is already used")
+            else: print("value conflicts with a neighbor")
             csp.unassign(var, assignment)
 
         return None
