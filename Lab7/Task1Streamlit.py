@@ -72,8 +72,10 @@ def buildGraph(CSP, backTrackColor = None):
         seats_domain = ""
         for j in CSP.domains[node]:
             seats_domain += " " + str(j)
+            if(backTrackColor is not None):
+                seats_domain = backTrackColor.get(node)
         net_lab7.add_node(node, color=nodeColors[node], title=seats_domain, size=sizes[i], x=x_coords[i], y=y_coords[i])
-
+    
     for nodeFrom in CSP.neighbors.keys():
         for nodeTo in CSP.neighbors[nodeFrom]:
             net_lab7.add_edge(nodeFrom, nodeTo, color="white")
